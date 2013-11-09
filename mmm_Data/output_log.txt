@@ -1,0 +1,18 @@
+Initialize engine version: 4.2.0f4 (38efbd14869d)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [d3d10warp.dll 6.2.9200.16384]
+    Renderer: Microsoft Basic Render Driver
+    Vendor:   Microsoft
+    VRAM:     256 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=0 NativeShadow=0 DF16=0 DF24=0 INTZ=0 RAWZ=0 NULL=0 RESZ=0 SlowINTZ=0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Administrator\Desktop\Meow\mmm_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Administrator\Desktop\Meow\mmm_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Administrator\Desktop\Meow\mmm_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Administrator\Desktop\Meow\mmm_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+- Completed reload, in  0.170 seconds
+desktop: 1024x768 64Hz; virtual: 1024x768 at 0,0
+<RI> Initializing input.
+XInput1_3.dll not found.
+<RI> Input initialized.

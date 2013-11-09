@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\AI.cs">
+    <Files>
+      <File FileName="Assets\scripts\GameManager.cs" Line="69" Column="3" />
+      <File FileName="Assets\scripts\AI.cs" Line="12" Column="16" />
+      <File FileName="Assets\scripts\Assassin.cs" Line="40" Column="27" />
+      <File FileName="Assets\scripts\Tile.cs" Line="63" Column="38" />
+      <File FileName="Assets\scripts\TilePath.cs" Line="10" Column="2" />
+      <File FileName="Assets\scripts\TilePathFinder.cs" Line="32" Column="20" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
