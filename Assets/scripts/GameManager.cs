@@ -14,7 +14,14 @@ public class GameManager : MonoBehaviour {
 	public int mapSize = 11;
 	
 	public List <List<Tile>> map = new List<List<Tile>>();
+	
+	//List of players that are in the grid
 	public List <Player> players = new List<Player>();
+	
+	//Holds the current location of the players on the grid
+	public Player[,] grid = new Player[11, 11];
+	
+	
 	public int currentPlayerIndex = 0;
 	
 	void Awake() {
@@ -51,73 +58,102 @@ public class GameManager : MonoBehaviour {
 		return map[x][y];
 	}
 	
-	public void highlightTilesAt(Vector2 originLocation, Color highlightColor, int distance) {
-		List <Tile> highlightedTiles = TileHighlight.FindHighlight(map[(int)originLocation.x][(int)originLocation.y], distance);
+	public bool isLocationInBounds(Location location)
+	{
+		return (location.X >= 0) && (location.X < mapSize) && (location.Y >= 0) && (location.Y < mapSize);
+	}
+	
+	public bool isLocationOccupied(Location location)
+	{
+		if (! isLocationInBounds(location))
+		{
+			Debug.Log("Location is out of bounds");
+			return false;
+		}
 		
-		foreach (Tile t in highlightedTiles) {
-			t.transform.renderer.material.color = highlightColor;
+		return grid[location.X, location.Y] != null;
+	}
+	
+	public Location tileToLocation(Tile tile)
+	{
+		return new Location((int) tile.gridPosition.x, (int) tile.gridPosition.y);
+	}
+	
+	public void highlightMoveableTiles(Location originLocation) {
+		Player player = players[currentPlayerIndex];
+		
+		List<Location> locations = player.getMoveableLocations();
+		
+		foreach (Location location in locations)
+		{
+			map[location.X][location.Y].transform.renderer.material.color = Color.blue;
+		}
+	}
+	
+	public void highlightAttackableTiles(Location originLocation) {
+		Player player = players[currentPlayerIndex];
+		
+		List<Location> locations = player.getAttackableLocations();
+		
+		foreach (Location location in locations)
+		{
+			map[location.X][location.Y].transform.renderer.material.color = Color.red;
 		}
 	}
 	
 	public void removeTileHighlights() {
 		for (int i = 0; i < mapSize; i++) {
 			for (int j = 0; j < mapSize; j++) {
-				if (!map[i][j].impassible) map[i][j].transform.renderer.material.color = Color.white;
+				map[i][j].transform.renderer.material.color = Color.white;
 			}
 		}
 	}
  	
-	public void moveCurrentPlayer(Tile destTile) {
-		if (destTile.transform.renderer.material.color != Color.white && !destTile.impassible) {
-			removeTileHighlights();
-			players[currentPlayerIndex].moving = false;
-			foreach(Tile t in TilePathFinder.FindPath(map[(int)players[currentPlayerIndex].gridPosition.x][(int)players[currentPlayerIndex].gridPosition.y],destTile)) {
-				players[currentPlayerIndex].positionQueue.Add(map[(int)t.gridPosition.x][(int)t.gridPosition.y].transform.position + 1.5f * Vector3.up);
-			}			
-			players[currentPlayerIndex].gridPosition = destTile.gridPosition;
-		} else {
-			Debug.Log ("Invalid");
+	public void moveCurrentPlayer(Location location) {
+		
+		if (isLocationOccupied(location))
+		{
+			Debug.Log("Can't move to occupied locaiton");
+			return;
 		}
+		
+		//Get the player that wants to move
+		Player mover = players[currentPlayerIndex];
+		
+		//Get the current location
+		Location current = mover.getLocation();
+		
+		//Remove the highlighted tiles
+		removeTileHighlights();
+		
+		//Get the movement
+		List<Tile> tiles = TilePathFinder.FindPath(map[current.X][current.Y], map[location.X][location.Y]);
+		
+		
+		foreach (Tile t in tiles) {
+			mover.positionQueue.Add(map[(int)t.gridPosition.x][(int)t.gridPosition.y].transform.position + 1.5f * Vector3.up);
+		}
+		
+		//Let the player know he has moved
+		mover.move(location);
+		
+		//Update the grid
+		grid[current.X, current.Y] = null;
+		grid[location.X, location.Y] = mover;
 	}
 	
-	public void attackWithCurrentPlayer(Tile destTile) {
-		if (destTile.transform.renderer.material.color != Color.white && !destTile.impassible) {
+	public void attackWithCurrentPlayer (Location location) {
+		
+		if (isLocationOccupied(location))
+		{
+			Player attacker = players[currentPlayerIndex];
+			Player target = grid[location.X, location.Y];
 			
-			Player target = null;
-			foreach (Player p in players) {
-				if (p.gridPosition == destTile.gridPosition) {
-					target = p;
-				}
-			}
-			
-			if (target != null) {
-				if (players[currentPlayerIndex].gridPosition.x >= target.gridPosition.x - players[currentPlayerIndex].getattackRange() && players[currentPlayerIndex].gridPosition.x <= target.gridPosition.x + players[currentPlayerIndex].getattackRange() &&
-					players[currentPlayerIndex].gridPosition.y >= target.gridPosition.y - players[currentPlayerIndex].getattackRange() && players[currentPlayerIndex].gridPosition.y <= target.gridPosition.y + players[currentPlayerIndex].getattackRange()) {
-					players[currentPlayerIndex].setattackPoints(0);
-					
-					removeTileHighlights();
-					players[currentPlayerIndex].moving = false;			
-					
-					//attack logic
-					//roll to hit
-					bool hit = Random.Range(0.0f, 1.0f) <= players[currentPlayerIndex].getattackChance();
-					
-					if (hit) {
-						//damage logic
-						int amountOfDamage = (int)Mathf.Floor(players[currentPlayerIndex].getdamageBase()); //+ Random.Range(0, players[currentPlayerIndex].damageRollSides));
-						
-						target.setHealthPower(target.getHealthPower()- amountOfDamage);
-						
-						Debug.Log(players[currentPlayerIndex].getplayerName() + " hit " + target.getplayerName() + " for " + amountOfDamage + " damage!");
-					} else {
-						Debug.Log(players[currentPlayerIndex].getplayerName() + " missed " + target.getplayerName());
-					}
-				} else {
-					Debug.Log ("Target is not adjacent!");
-				}
-			}
-		} else {
-			Debug.Log ("destination invalid");
+			attacker.attack(target);
+		}
+		else
+		{
+			Debug.Log("No player at the locaiton");
 		}
 	}
 	
@@ -139,23 +175,32 @@ public class GameManager : MonoBehaviour {
 		AI ai;
 		Knight knightplayer;
 		Archer archerplayer;
-		Assassin assassinPlayer;
 		
-		archerplayer = ((GameObject)Instantiate(ArcherPrefab, new Vector3(0 - Mathf.Floor(mapSize/2),1.5f, -0 + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<Archer>();
+		
+		Assassin assassinPlayer;
+		Location location = new Location(0, 0);
+		
+		assassinPlayer = ((GameObject)Instantiate(AssassinPrefab, new Vector3(0 - Mathf.Floor(mapSize/2),1.5f, -0 + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<Assassin>();
+		assassinPlayer.gridPosition = location;
+		players.Add(assassinPlayer);
+		grid[0, 0] = assassinPlayer;
+		
+		/*archerplayer = ((GameObject)Instantiate(ArcherPrefab, new Vector3(0 - Mathf.Floor(mapSize/2),1.5f, -0 + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<Archer>();
 		archerplayer.gridPosition = new Vector2(0,0);
 		players.Add(archerplayer);
 		
 		assassinPlayer = ((GameObject)Instantiate(AssassinPrefab, new Vector3((mapSize-1) - Mathf.Floor(mapSize/2),1.5f, -(mapSize-1) + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<Assassin>();
 		assassinPlayer.gridPosition = new Vector2();
-		players.Add(assassinPlayer);
+		players.Add(assassinPlayer);*/
 		
 		knightplayer = ((GameObject)Instantiate(KnightPrefab, new Vector3(0 - Mathf.Floor(mapSize/2),1.5f, -1 + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<Knight>();
-		knightplayer.gridPosition = new Vector2(0,1);
+		knightplayer.gridPosition = new Location(0, 1);
 		players.Add(knightplayer);
+		grid[0, 1] = knightplayer;
 		
-		ai = ((GameObject)Instantiate(AIPrefab, new Vector3((mapSize-1) - Mathf.Floor(mapSize/2),1.5f, -(mapSize-2) + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<AI>();
+		/*ai = ((GameObject)Instantiate(AIPrefab, new Vector3((mapSize-1) - Mathf.Floor(mapSize/2),1.5f, -(mapSize-2) + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<AI>();
 		ai.gridPosition = new Vector2(mapSize-1,mapSize-2);
-		players.Add(ai);
+		players.Add(ai);*/
 				
 
 		//AI ai = ((GameObject)Instantiate(AIPlayerPrefab, new Vector3(6 - Mathf.Floor(mapSize/2),1.5f, -4 + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<AI>();

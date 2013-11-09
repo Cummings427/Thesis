@@ -68,7 +68,7 @@ public class UserPlayer : Player {
 				GameManager.instance.removeTileHighlights();
 				moving = true;
 				attacking = false;
-				GameManager.instance.highlightTilesAt(gridPosition, Color.blue, getmovementPerActionPoint());
+				//GameManager.instance.highlightTilesAt(gridPosition, Color.blue, getmovementPerActionPoint());
 			} else {
 				moving = false;
 				attacking = false;
@@ -84,7 +84,7 @@ public class UserPlayer : Player {
 				GameManager.instance.removeTileHighlights();
 				moving = false;
 				attacking = true;
-				GameManager.instance.highlightTilesAt(gridPosition, Color.red, getattackRange());
+				//GameManager.instance.highlightTilesAt(gridPosition, Color.red, getattackRange());
 			} else {
 				moving = false;
 				attacking = false;
@@ -111,7 +111,7 @@ public class UserPlayer : Player {
 				GameManager.instance.removeTileHighlights();
 				moving = false;
 				attacking = true;
-				GameManager.instance.highlightTilesAt(gridPosition, Color.red, getattackRange());
+				//GameManager.instance.highlightTilesAt(gridPosition, Color.red, getattackRange());
 			} else {
 				moving = false;
 				attacking = false;

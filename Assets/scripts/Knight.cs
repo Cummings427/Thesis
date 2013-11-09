@@ -71,7 +71,7 @@ public override void TurnOnGUI () {
 				GameManager.instance.removeTileHighlights();
 				moving = true;
 				attacking = false;
-				GameManager.instance.highlightTilesAt(gridPosition, Color.blue, getmovementPerActionPoint());
+				GameManager.instance.highlightMoveableTiles(getLocation());
 			} else {
 				moving = false;
 				attacking = false;
@@ -87,7 +87,7 @@ public override void TurnOnGUI () {
 				GameManager.instance.removeTileHighlights();
 				moving = false;
 				attacking = true;
-				GameManager.instance.highlightTilesAt(gridPosition, Color.red, getattackRange());
+				GameManager.instance.highlightAttackableTiles(getLocation());
 			} else {
 				moving = false;
 				attacking = false;
@@ -114,7 +114,7 @@ public override void TurnOnGUI () {
 				GameManager.instance.removeTileHighlights();
 				moving = false;
 				attacking = true;
-				GameManager.instance.highlightTilesAt(gridPosition, Color.red, getattackRange());
+				//GameManager.instance.highlightTilesAt(gridPosition, Color.red, getattackRange());
 			} else {
 				moving = false;
 				attacking = false;
