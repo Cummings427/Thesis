@@ -72,12 +72,13 @@ public class Tile : MonoBehaviour {
 	
 	
 	void OnMouseDown() {
+		Debug.Log("Tile was clicked location is " + gridPosition.x + ", " + gridPosition.y);
 		if (GameManager.instance.players[GameManager.instance.currentPlayerIndex].moving) {
-			GameManager.instance.moveCurrentPlayer(this);
+			Location location = GameManager.instance.tileToLocation(this);
+			GameManager.instance.moveCurrentPlayer(location);
 		} else if (GameManager.instance.players[GameManager.instance.currentPlayerIndex].attacking) {
-			GameManager.instance.attackWithCurrentPlayer(this);
+			Location location = GameManager.instance.tileToLocation(this);
+			GameManager.instance.attackWithCurrentPlayer(location);
 		} 
-		
 	}
-	
 }

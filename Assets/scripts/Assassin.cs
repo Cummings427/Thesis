@@ -7,7 +7,7 @@ public class Assassin : Player {
 	
 	void AddCompnent(){
 		base.setHealthPower(62);
-		base.setmovementPerActionPoint(2);
+		base.setmovementPerActionPoint(6);
 		base.setdamageBase(3);
 		base.setdefenseReduction(0.15f);
 		base.setattackChance(0.75f);
@@ -67,7 +67,7 @@ public class Assassin : Player {
 				GameManager.instance.removeTileHighlights();
 				moving = true;
 				attacking = false;
-				GameManager.instance.highlightTilesAt(gridPosition, Color.blue, getmovementPerActionPoint());
+				GameManager.instance.highlightMoveableTiles(getLocation());
 			} else {
 				moving = false;
 				attacking = false;
@@ -83,7 +83,7 @@ public class Assassin : Player {
 				GameManager.instance.removeTileHighlights();
 				moving = false;
 				attacking = true;
-				GameManager.instance.highlightTilesAt(gridPosition, Color.red, getattackRange());
+				GameManager.instance.highlightAttackableTiles(getLocation());
 			} else {
 				moving = false;
 				attacking = false;
@@ -110,7 +110,7 @@ public class Assassin : Player {
 				GameManager.instance.removeTileHighlights();
 				moving = false;
 				attacking = true;
-				GameManager.instance.highlightTilesAt(gridPosition, Color.red, getattackRange());
+				//GameManager.instance.highlightTilesAt(gridPosition, Color.red, getattackRange());
 			} else {
 				moving = false;
 				attacking = false;

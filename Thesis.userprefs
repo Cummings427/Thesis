@@ -1,0 +1,20 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\Location.cs">
+    <Files>
+      <File FileName="Assets\scripts\Player.cs" Line="204" Column="55" />
+      <File FileName="Assets\scripts\Location.cs" Line="31" Column="60" />
+      <File FileName="Assets\scripts\Knight.cs" Line="71" Column="49" />
+      <File FileName="Assets\scripts\TileHighlight.cs" Line="33" Column="41" />
+      <File FileName="Assets\scripts\AI.cs" Line="75" Column="41" />
+      <File FileName="Assets\scripts\Archer.cs" Line="116" Column="7" />
+      <File FileName="Assets\scripts\Assassin.cs" Line="113" Column="7" />
+      <File FileName="Assets\scripts\Tile.cs" Line="75" Column="1" />
+      <File FileName="Assets\scripts\GameManager.cs" Line="183" Column="168" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

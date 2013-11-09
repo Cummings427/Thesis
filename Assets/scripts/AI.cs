@@ -4,7 +4,7 @@ using System.Collections;
 public class AI : Player
 {
 	
-	public GameObject[] Kill;
+	/*public GameObject[] Kill;
 	
 	void AddCompnent ()
 	{
@@ -120,7 +120,7 @@ public class AI : Player
 	
 	public override void TurnOnGUI ()
 	{
-		GameManager.instance.highlightTilesAt(gridPosition, Color.blue, getmovementPerActionPoint());
+		//GameManager.instance.highlightTilesAt(gridPosition, Color.blue, getmovementPerActionPoint());
 		/*float buttonHeight = 25;
 		float buttonWidth = 100;
 		Rect buttonRect = new Rect(0, buttonHeight, buttonWidth, buttonHeight);
