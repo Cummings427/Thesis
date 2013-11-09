@@ -108,6 +108,11 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 	}
+	
+	public void movePlayer(Player player, Location location)
+	{
+		
+	}
  	
 	public void moveCurrentPlayer(Location location) {
 		
@@ -198,9 +203,11 @@ public class GameManager : MonoBehaviour {
 		players.Add(knightplayer);
 		grid[0, 1] = knightplayer;
 		
-		/*ai = ((GameObject)Instantiate(AIPrefab, new Vector3((mapSize-1) - Mathf.Floor(mapSize/2),1.5f, -(mapSize-2) + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<AI>();
-		ai.gridPosition = new Vector2(mapSize-1,mapSize-2);
-		players.Add(ai);*/
+		ai = ((GameObject)Instantiate(AIPrefab, new Vector3((mapSize-1) - Mathf.Floor(mapSize/2),1.5f, -(mapSize-2) + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<AI>();
+		ai.gridPosition = new Location(mapSize - 1, mapSize - 2);
+		players.Add(ai);
+		ai.target = assassinPlayer;
+		grid[mapSize - 1, mapSize - 2] = ai;
 				
 
 		//AI ai = ((GameObject)Instantiate(AIPlayerPrefab, new Vector3(6 - Mathf.Floor(mapSize/2),1.5f, -4 + Mathf.Floor(mapSize/2)), Quaternion.Euler(new Vector3()))).GetComponent<AI>();

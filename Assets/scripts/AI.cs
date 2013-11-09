@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AI : Player
 {
 	
-	/*public GameObject[] Kill;
+	public Player target;
 	
 	void AddCompnent ()
 	{
@@ -23,7 +24,7 @@ public class AI : Player
 	void Awake ()
 	{
 	
-		Kill = GameObject.FindGameObjectsWithTag ("Player");
+		//Kill = GameObject.FindGameObjectsWithTag ("Player");
 	}
 	
 	void Start ()
@@ -36,7 +37,6 @@ public class AI : Player
 	void Update ()
 	{
 
-		
 		if (GameManager.instance.players [GameManager.instance.currentPlayerIndex] == this) {
 			transform.renderer.material.color = Color.blue;
 		} else {
@@ -53,7 +53,39 @@ public class AI : Player
 	public override void TurnUpdate ()
 	{
 		//find path to kill object
-		var obj = Kill[1];
+		Location targetLoc = target.getLocation();
+		List<Location> attackable = getAttackableLocations();
+		
+		if (attackable.Contains(targetLoc))
+		{
+			Debug.Log("AI attacked target");
+			this.attack(target);
+			GameManager.instance.nextTurn ();
+			return;
+		}
+		
+		List<Location> moveable = getMoveableLocations();
+		int index = Random.Range(0, moveable.Count);
+		GameManager.instance.moveCurrentPlayer(moveable[index]);
+		
+		if (positionQueue.Count > 0) {
+			transform.position += (positionQueue[0] - transform.position).normalized * moveSpeed * Time.deltaTime;
+			
+			if (Vector3.Distance(positionQueue[0], transform.position) <= 0.1f) {
+				transform.position = positionQueue[0];
+				positionQueue.RemoveAt(0);
+				if (positionQueue.Count == 0) {
+					Debug.Log (positionQueue);
+					setmovePoints(0);
+				}
+			}
+		}
+		
+		base.TurnUpdate ();
+	}
+		
+		
+		/*var obj = Kill[1];
 		moveDestination = new Vector3 (obj.transform.position.x, 2, obj.transform.position.z);
 		Debug.Log("Path to kill object update to + " + moveDestination.ToString());
 		
